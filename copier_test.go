@@ -1762,3 +1762,28 @@ func TestNestedNilPointerStruct(t *testing.T) {
 		t.Errorf("to (%v) value should equal from (%v) value", to.Title, from.Title)
 	}
 }
+
+func TestCaseInsensitive(t *testing.T) {
+	type In struct {
+		NAME string
+		Age  int
+	}
+	type Out struct {
+		Name string
+		AGE  int
+	}
+	in1 := &In{
+		NAME: "a",
+		Age:  1,
+	}
+	out1 := &Out{}
+	// copier.CopyWithOption(out1, in1, copier.Option{CaseInsensitive: false})
+	// if !reflect.DeepEqual(out1, &Out{}) {
+	// 	t.Error("copy error")
+	// }
+	copier.CopyWithOption(out1, in1, copier.Option{CaseInsensitive: true})
+	fmt.Printf("%v", out1)
+	if out1.Name != in1.NAME || out1.AGE != in1.Age {
+		t.Error("copy error")
+	}
+}
